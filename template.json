@@ -1,0 +1,81 @@
+{
+  "min_packer_version": "1.4.0",
+  "variables": {
+    "name": "ws2019s",
+    "description": "Windows Server 2019 Standard",
+    "version": "1912.0.0",
+    "author": "Adam_Rzepecki",
+    "output_directory": "output",
+    "iso_url": "https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso",
+    "iso_checksum_type": "sha256",
+    "iso_checksum": "549bca46c055157291be6c22a3aaaed8330e78ef4382c99ee82c896426a1cee1",
+    "virtualbox_headless": "true",
+    "virtualbox_memory": "8192",
+    "virtualbox_cpus": "4",
+    "virtualbox_boot_wait": "10s",
+    "virtualbox_communicator": "ssh",
+    "virtualbox_ssh_username": "Administrator",
+    "virtualbox_ssh_password": "Packer42-",
+    "virtualbox_ssh_timeout": "30m",
+    "virtualbox_guest_additions_mode": "upload",
+    "virtualbox_shutdown_command": "shutdown /s /t 10",
+    "virtualbox_shutdown_timeout": "10m",
+    "virtualbox_post_shutdown_delay": "5s",
+    "virtualbox_guest_os_type": "Windows10_64",
+    "virtualbox_disk_size": "130048",
+    "virtualbox_floppy_files": "builders/virtualbox-iso/floppy"
+  },
+  "description": "{{user `description`}}",
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "vm_name": "{{user `author`}}-{{user `name`}}-{{user `version`}}-{{timestamp}}",
+      "guest_os_type": "{{user `virtualbox_guest_os_type`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "headless": "{{user `virtualbox_headless`}}",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "{{user `virtualbox_memory`}}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "{{user `virtualbox_cpus`}}"
+        ]
+      ],
+      "disk_size": "{{user `virtualbox_disk_size`}}",
+      "floppy_files": "{{user `virtualbox_floppy_files`}}",
+      "boot_wait": "{{user `virtualbox_boot_wait`}}",
+      "communicator": "{{user `virtualbox_communicator`}}",
+      "ssh_username": "{{user `virtualbox_ssh_username`}}",
+      "ssh_password": "{{user `virtualbox_ssh_password`}}",
+      "ssh_timeout": "{{user `virtualbox_ssh_timeout`}}",
+      "guest_additions_mode": "{{user `virtualbox_guest_additions_mode`}}",
+      "shutdown_command": "{{user `virtualbox_shutdown_command`}}",
+      "shutdown_timeout": "{{user `virtualbox_shutdown_timeout`}}",
+      "post_shutdown_delay": "{{user `virtualbox_post_shutdown_delay`}}",
+      "output_directory": "{{user `output_directory`}}/build"
+    }
+  ],
+  "provisioners": [
+  ],
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "{{user `output_directory`}}/build/manifest.json"
+    },
+    {
+      "type": "checksum",
+      "checksum_types": [
+        "sha256"
+      ],
+      "output": "{{user `output_directory`}}/build/checksum.{{.ChecksumType}}"
+    }
+  ]
+}
