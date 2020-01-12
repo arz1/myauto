@@ -66,9 +66,11 @@
   "provisioners": [
     {
       "type": "powershell",
+      "elevated_user": "{{user `virtualbox_ssh_username`}}",
+      "elevated_password": "{{user `virtualbox_ssh_password`}}",
       "inline": [
         "Write-Host 'WSL feature enabling...'"
-        ,"ProgressPreference = 'SilentlyContinue'"
+        ,"$ProgressPreference = 'SilentlyContinue'"
         ,"Enable-WindowsOptionalFeature -NoRestart -WarningAction SilentlyContinue -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
         ,"Write-Host 'WSL feature enabled.'"
       ]
@@ -82,17 +84,17 @@
       "elevated_password": "{{user `virtualbox_ssh_password`}}",
       "inline": [
         "Write-Host 'WSL downloading...'"
-        ,"ProgressPreference = 'SilentlyContinue'"
+        ,"$ProgressPreference = 'SilentlyContinue'"
         ,"Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile WslUbuntu1804.zip -UseBasicParsing"
         ,"Write-Host 'WSL downloaded.'"
         ,"Expand-Archive -Path WslUbuntu1804.zip -DestinationPath WslUbuntu1804"
         ,"cd WslUbuntu1804"
         ,"./ubuntu1804.exe install --root"
-        ,"wsl"
-        ,"useradd -m -p $(openssl passwd -crypt a) -s /bin/bash wsluser"
-        ,"usermod -aG sudo wsluser"
-        ,"exit"
+        ,"bash -c 'useradd -m -p $(openssl passwd -crypt a) -s /bin/bash wsluser'"
+        ,"bash -c 'usermod -aG sudo wsluser'"
         ,"./ubuntu1804.exe config --default-user wsluser"
+
+        dodaj wiecej komentarzy oraz zmien sciezke pobierania teraz trafia do system 32 powinien byc home
       ]
     }
   ],
