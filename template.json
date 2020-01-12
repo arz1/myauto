@@ -4,7 +4,7 @@
     "name": "ws2019s",
     "description": "Windows Server 2019 Standard",
     "version": "1912.0.0",
-    "author": "Adam_Rzepecki",
+    "author": "adam-rzepecki",
     "output_directory": "output",
     "iso_url": "https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso",
     "iso_checksum_type": "sha256",
@@ -64,6 +64,37 @@
     }
   ],
   "provisioners": [
+    {
+      "type": "powershell",
+      "inline": [
+        "Write-Host 'WSL feature enabling...'"
+        ,"ProgressPreference = 'SilentlyContinue'"
+        ,"Enable-WindowsOptionalFeature -NoRestart -WarningAction SilentlyContinue -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
+        ,"Write-Host 'WSL feature enabled.'"
+      ]
+    }
+    ,{
+      "type": "windows-restart"
+    }
+    ,{
+      "type": "powershell",
+      "elevated_user": "{{user `virtualbox_ssh_username`}}",
+      "elevated_password": "{{user `virtualbox_ssh_password`}}",
+      "inline": [
+        "Write-Host 'WSL downloading...'"
+        ,"ProgressPreference = 'SilentlyContinue'"
+        ,"Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile WslUbuntu1804.zip -UseBasicParsing"
+        ,"Write-Host 'WSL downloaded.'"
+        ,"Expand-Archive -Path WslUbuntu1804.zip -DestinationPath WslUbuntu1804"
+        ,"cd WslUbuntu1804"
+        ,"./ubuntu1804.exe install --root"
+        ,"wsl"
+        ,"useradd -m -p $(openssl passwd -crypt a) -s /bin/bash wsluser"
+        ,"usermod -aG sudo wsluser"
+        ,"exit"
+        ,"./ubuntu1804.exe config --default-user wsluser"
+      ]
+    }
   ],
   "post-processors": [
     {
