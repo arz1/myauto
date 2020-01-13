@@ -83,18 +83,19 @@
       "elevated_user": "{{user `virtualbox_ssh_username`}}",
       "elevated_password": "{{user `virtualbox_ssh_password`}}",
       "inline": [
-        "Write-Host 'WSL downloading...'"
+        "cd ~"
+        ,"Write-Host 'WSL downloading...'"
         ,"$ProgressPreference = 'SilentlyContinue'"
         ,"Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile WslUbuntu1804.zip -UseBasicParsing"
-        ,"Write-Host 'WSL downloaded.'"
+        ,"Write-Host 'WSL downloaded. Extraction...'"
         ,"Expand-Archive -Path WslUbuntu1804.zip -DestinationPath WslUbuntu1804"
+        ,"Write-Host 'Extracted. Installation started...'"
         ,"cd WslUbuntu1804"
         ,"./ubuntu1804.exe install --root"
         ,"bash -c 'useradd -m -p $(openssl passwd -crypt a) -s /bin/bash wsluser'"
         ,"bash -c 'usermod -aG sudo wsluser'"
         ,"./ubuntu1804.exe config --default-user wsluser"
-
-        dodaj wiecej komentarzy oraz zmien sciezke pobierania teraz trafia do system 32 powinien byc home
+        ,"Write-Host 'Done.'"
       ]
     }
   ],
