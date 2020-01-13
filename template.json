@@ -96,6 +96,7 @@
         ,"bash -c 'usermod -aG sudo wsluser'"
         ,"./ubuntu1804.exe config --default-user wsluser"
         ,"Write-Host 'Done.'"
+        ,"Write-Host 'INSTALL GUEST ISO'"
       ]
     }
   ],

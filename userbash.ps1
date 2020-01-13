@@ -12,3 +12,4 @@ useradd -m -p $(openssl passwd -crypt a) -s /bin/bash wsluser
 usermod -aG sudo wsluser
 exit
 .\ubuntu1804.exe config --default-user wsluser
+#bash -c "echo a | sudo -S apt-get update"
