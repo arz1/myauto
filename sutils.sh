@@ -4,6 +4,7 @@ set -e
 __rise_error()
 {
     echo ERROR: $1
+    exit 1
 }
 
 __is_wsl()
@@ -29,7 +30,14 @@ __is_mac()
 
 install_packer_win()
 {
-    echo install_packer_win
+    local platform=windows
+    local archive_name=packer_1.5.1_${platform}_amd64.zip
+    local source_path=https://releases.hashicorp.com/packer/1.5.1/${archive_name}
+    local destination_path=/mnt/c/Windows/System32/
+
+    wget $source_path
+    7z e $archive_name
+    mv packer.exe $destination_path
 }
 
 install_packer_nix()
@@ -61,7 +69,7 @@ help()
 }
 
 if [ $# -eq 0 ]; then
-    __rise_error "No input parameters!!"
+    echo "No input parameters!!"
     help
 else 
     echo Input parameters: "$@"

@@ -99,6 +99,15 @@
         ,"Write-Host 'INSTALL GUEST ISO'"
       ]
     }
+    ,{
+      "type": "powershell",
+      "inline": [
+        "cd ~"
+        ,"Write-Host 'Software installation...'"
+        ,"bash -c 'echo a | sudo -S apt-get -y install p7zip-full'"
+        ,"Write-Host 'Software installed.'"
+      ]
+    }
   ],
   "post-processors": [
     {
