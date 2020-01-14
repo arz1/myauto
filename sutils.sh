@@ -5,7 +5,7 @@ __rise_error()
 {
     echo ERROR: $1
     echo Processing aborted.
-    exit 1
+    exit 2
 }
 
 __is_wsl()
