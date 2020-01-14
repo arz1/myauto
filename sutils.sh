@@ -4,6 +4,7 @@ set -e
 __rise_error()
 {
     echo ERROR: $1
+    echo Processing aborted.
     exit 1
 }
 
@@ -33,11 +34,17 @@ install_packer_win()
     local platform=windows
     local archive_name=packer_1.5.1_${platform}_amd64.zip
     local source_path=https://releases.hashicorp.com/packer/1.5.1/${archive_name}
+    local file_name=packer.exe
     local destination_path=/mnt/c/Windows/System32/
 
-    wget $source_path
-    7z e $archive_name
-    mv packer.exe $destination_path
+    if [ -w $destination_path ] ; then
+        wget $source_path
+        7z e $archive_name
+        mv --force $file_name $destination_path
+        rm $archive_name
+    else
+        __rise_error "Cannot write to path "${destination_path}" Try run WLS with elevated Windows privilages."
+    fi
 }
 
 install_packer_nix()
