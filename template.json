@@ -69,24 +69,6 @@
     {
       "type": "powershell",
       "inline": [
-        "mkdir -Force {{user `upload_destination`}}"
-      ]
-    }
-    ,{
-      "type": "file",
-      "source": "{{user `upload_source`}}/upload/",
-      "destination": "{{user `upload_destination`}}"
-    }
-    ,{
-      "type": "powershell",
-      "inline": [
-        "cd {{user `upload_destination`}}"
-        ,"bash -c './sutils.sh install_packer'"
-      ]
-    }
-    ,{
-      "type": "powershell",
-      "inline": [
         "Write-Host 'WSL feature enabling...'"
         ,"$ProgressPreference = 'SilentlyContinue'"
         ,"Enable-WindowsOptionalFeature -NoRestart -WarningAction SilentlyContinue -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
@@ -124,6 +106,24 @@
         ,"bash -c 'echo a | sudo -S apt-get update'"
         ,"bash -c 'echo a | sudo -S apt-get -y install p7zip-full'"
         ,"Write-Host 'Software installed.'"
+      ]
+    }
+    ,{
+      "type": "powershell",
+      "inline": [
+        "mkdir -Force {{user `upload_destination`}}"
+      ]
+    }
+    ,{
+      "type": "file",
+      "source": "{{user `upload_source`}}/upload/",
+      "destination": "{{user `upload_destination`}}"
+    }
+    ,{
+      "type": "powershell",
+      "inline": [
+        "cd {{user `upload_destination`}}"
+        ,"bash -c './sutils.sh install_packer'"
       ]
     }
   ],
