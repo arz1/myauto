@@ -9,6 +9,8 @@
     "iso_url": "https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso",
     "iso_checksum_type": "sha256",
     "iso_checksum": "549bca46c055157291be6c22a3aaaed8330e78ef4382c99ee82c896426a1cee1",
+    "upload_source": "builders/virtualbox-iso",
+    "upload_destination": "C:/Windows/Setup/packer",
     "virtualbox_headless": "true",
     "virtualbox_memory": "8192",
     "virtualbox_cpus": "4",
@@ -65,6 +67,24 @@
   ],
   "provisioners": [
     {
+      "type": "powershell",
+      "inline": [
+        "mkdir -Force {{user `upload_destination`}}"
+      ]
+    }
+    ,{
+      "type": "file",
+      "source": "{{user `upload_source`}}/upload/",
+      "destination": "{{user `upload_destination`}}"
+    }
+    ,{
+      "type": "powershell",
+      "inline": [
+        "cd {{user `upload_destination`}}"
+        ,"bash -c './sutils.sh install_packer'"
+      ]
+    }
+    ,{
       "type": "powershell",
       "inline": [
         "Write-Host 'WSL feature enabling...'"
