@@ -10,7 +10,7 @@ __rise_error()
 
 __is_wsl()
 {
-    if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
+    if [ grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ]; then
         echo "(W)indows (S)ubsystem (L)inux - bash"
         return 1
     else
@@ -59,21 +59,31 @@ install_packer_mac()
 
 install_packer()
 {
-    if [ __is_wsl ]; then
+    if  [ $(__is_win) ]; then
         install_packer_win
-    elif [ __is_nix ]; then
+    elif [ $(__is_nix) ]; then
         install_packer_nix
-    elif [ __is_mac ]; then
+    elif [ $(__is_mac) ]; then
         install_packer_mac
     else
         __rise_error "Unknown platform! Cannot install packer!"
     fi
 }
 
+install_software()
+{
+    install_packer
+
+    echo a | sudo -S apt-get update
+    echo a | sudo -S apt-get -y install p7zip-full
+}
+
 help()
 {
     echo Help instruction to be filled ...
 }
+
+install_software
 
 if [ $# -eq 0 ]; then
     echo "No input parameters!!"
