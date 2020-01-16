@@ -12,9 +12,9 @@ __is_wsl()
 {
     if [ grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ]; then
         echo "(W)indows (S)ubsystem (L)inux - bash"
-        return 1
-    else
         return 0
+    else
+        return 1
     fi
 }
 
@@ -59,11 +59,11 @@ install_packer_mac()
 
 install_packer()
 {
-    if  [ $(__is_win) ]; then
+    if $(__is_wsl) ; then
         install_packer_win
-    elif [ $(__is_nix) ]; then
+    elif $(__is_nix) ; then
         install_packer_nix
-    elif [ $(__is_mac) ]; then
+    elif $(__is_mac) ; then
         install_packer_mac
     else
         __rise_error "Unknown platform! Cannot install packer!"
@@ -74,8 +74,10 @@ install_software()
 {
     install_packer
 
-    echo a | sudo -S apt-get update
-    echo a | sudo -S apt-get -y install p7zip-full
+    #echo a | sudo -S 
+    apt-get update
+    #echo a | sudo -S 
+    apt-get -y install p7zip-full
 }
 
 help()

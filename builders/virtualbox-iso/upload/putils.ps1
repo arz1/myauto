@@ -25,11 +25,11 @@ function Install-Wsl()
     Write-Host 'INSTALL GUEST ISO'
 }
 
-function Install-Wsl-Software()
-{
-    Set-Location '~'
-    Write-Host 'Software installation...'
-    bash -c 'echo a | sudo -S apt-get update'
-    bash -c 'echo a | sudo -S apt-get -y install p7zip-full'
-    Write-Host 'Software installed.'
-}
+# function Install-Wsl-Software()
+# {
+#     Set-Location '~'
+#     Write-Host 'Software installation...'
+#     bash -c 'echo a | sudo -S apt-get update'
+#     bash -c 'echo a | sudo -S apt-get -y install p7zip-full'
+#     Write-Host 'Software installed.'
+# }
