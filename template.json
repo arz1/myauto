@@ -91,14 +91,14 @@
       "type": "powershell",
       "inline": [
         ". {{user `upload_destination`}}/putils.ps1"
-        ,"Install-Wsl"
+        ,"Install-Wsl a"
       ]
     }
     ,{
       "type": "powershell",
       "inline": [
         "cd {{user `upload_destination`}}"
-        ,"bash -c './sutils.sh install_software'"
+        ,"bash -c './sutils.sh install_software a'"
       ]
     }
   ],

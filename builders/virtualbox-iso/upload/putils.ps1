@@ -6,7 +6,7 @@ function Enable-Wsl-Feature()
     Write-Host 'WSL feature enabled.'
 }
 
-function Install-Wsl()
+function Install-Wsl($spass)
 {
     Set-Location '~'
     Write-Host 'WSL downloading...'
@@ -18,7 +18,7 @@ function Install-Wsl()
     Write-Host 'Extracted. Installation started...'
     Set-Location 'WslUbuntu1804'
     ./ubuntu1804.exe install --root
-    bash -c 'useradd -m -p $(openssl passwd -crypt a) -s /bin/bash wsluser'
+    bash -c "useradd -m -p `$(openssl passwd -crypt $spass) -s /bin/bash wsluser"
     bash -c 'usermod -aG sudo wsluser'
     ./ubuntu1804.exe config --default-user wsluser
     Write-Host 'Done.'
