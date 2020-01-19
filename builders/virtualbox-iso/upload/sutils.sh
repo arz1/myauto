@@ -57,6 +57,21 @@ install_packer_mac()
     echo install_packer_mac
 }
 
+install_vagrant_win()
+{
+    echo install_vagrant_win
+}
+
+install_vagrant_nix()
+{
+    echo install_vagrant_nix
+}
+
+install_vagrant_mac()
+{
+    echo install_vagrant_mac
+}
+
 install_packer()
 {
     if [ $(__is_wsl) -eq 0 ]; then
@@ -70,6 +85,19 @@ install_packer()
     fi
 }
 
+install_vagrant()
+{
+    if [ $(__is_wsl) -eq 0 ]; then
+        install_vagrant_win
+    elif [ $(__is_nix) -eq 0 ]; then
+        install_vagrant_nix
+    elif [ $(__is_mac) -eq 0 ]; then
+        install_vagrant_mac
+    else
+        __rise_error "Unknown platform! Cannot install packer!"
+    fi
+}
+
 install_software()
 {
     local spass=$1
@@ -78,6 +106,7 @@ install_software()
     echo $spass | sudo -S apt-get -y install p7zip-full
 
     install_packer
+    install_vagrant
 }
 
 help()
