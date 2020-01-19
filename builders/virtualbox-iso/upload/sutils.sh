@@ -10,8 +10,8 @@ __rise_error()
 
 __is_wsl()
 {
-    if [ grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ]; then
-        echo "(W)indows (S)ubsystem (L)inux - bash"
+    if [[ "$(< /proc/sys/kernel/osrelease)" == *Microsoft ]]; then
+        echo "(W)indows (S)ubsystem (L)inux - bash" >&2
         echo 0
     else
         echo 1

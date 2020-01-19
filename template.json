@@ -12,7 +12,7 @@
     "upload_source": "builders/virtualbox-iso",
     "upload_destination": "C:/Windows/Setup/packer",
     "virtualbox_headless": "true",
-    "virtualbox_memory": "8192",
+    "virtualbox_memory": "6192",
     "virtualbox_cpus": "4",
     "virtualbox_boot_wait": "10s",
     "virtualbox_communicator": "ssh",
