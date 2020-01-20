@@ -59,7 +59,19 @@ install_packer_mac()
 
 install_vagrant_win()
 {
-    echo install_vagrant_win
+    local install_name=vagrant_2.2.6_x86_64.msi
+    local source_path=https://releases.hashicorp.com/vagrant/2.2.6/${install_name}
+
+    if [ -w . ] ; then
+        wget $source_path
+        
+        cmd.exe /c "start /wait msiexec.exe /a c:\Users\Administrator\vagrant_2.2.6_x86_64.msi /qn TARGETDIR=c:\avagh55"
+        #cmd.exe /c "start /wait msiexec.exe /a c:\users\Administrator\vagrant_2.2.6_x86_64.msi /qn TARGETDIR=c:\vagh"
+
+        rm $install_name
+    else
+        __rise_error "Cannot write to path "${destination_path}" Try run WLS with elevated Windows privilages."
+    fi
 }
 
 install_vagrant_nix()
