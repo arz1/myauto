@@ -67,7 +67,7 @@ install_vagrant_win()
         
         cmd.exe /c "start /wait msiexec.exe /a c:\Users\Administrator\vagrant_2.2.6_x86_64.msi /qn TARGETDIR=c:\avagh55"
         #cmd.exe /c "start /wait msiexec.exe /a c:\users\Administrator\vagrant_2.2.6_x86_64.msi /qn TARGETDIR=c:\vagh"
-
+        # rm $install_name from avagh55
         rm $install_name
     else
         __rise_error "Cannot write to path "${destination_path}" Try run WLS with elevated Windows privilages."
