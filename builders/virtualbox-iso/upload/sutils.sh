@@ -71,7 +71,7 @@ install_vagrant_win()
         cmd.exe /c "start /wait msiexec.exe /a "${install_name}" /qn TARGETDIR=C:\\"
         rm $install_name
         rm "/mnt/c/"${install_name}
-        cmd.exe /c "setx /M PATH \"%PATH%;C:\\Hashicorp\\Vagrant\\bin\""
+        setx.exe /M PATH "%PATH%;C:\Hashicorp\Vagrant\bin"
         echo Machine restart adviced...
     else
         __rise_error "Cannot write to path saved in %HOMEPATH%. Try run WLS with elevated Windows privilages."
