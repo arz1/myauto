@@ -61,16 +61,20 @@ install_vagrant_win()
 {
     local install_name=vagrant_2.2.6_x86_64.msi
     local source_path=https://releases.hashicorp.com/vagrant/2.2.6/${install_name}
+    local win_user=$1
+
+    cmd.exe /c "cd %HOMEPATH%"
 
     if [ -w . ] ; then
         wget $source_path
         
-        cmd.exe /c "start /wait msiexec.exe /a c:\Users\Administrator\vagrant_2.2.6_x86_64.msi /qn TARGETDIR=c:\avagh55"
-        #cmd.exe /c "start /wait msiexec.exe /a c:\users\Administrator\vagrant_2.2.6_x86_64.msi /qn TARGETDIR=c:\vagh"
-        # rm $install_name from avagh55
+        cmd.exe /c "start /wait msiexec.exe /a "${install_name}" /qn TARGETDIR=C:\\"
         rm $install_name
+        rm "/mnt/c/"${install_name}
+        cmd.exe /c "setx /M PATH \"%PATH%;C:\\Hashicorp\\Vagrant\\bin\""
+        echo Machine restart adviced...
     else
-        __rise_error "Cannot write to path "${destination_path}" Try run WLS with elevated Windows privilages."
+        __rise_error "Cannot write to path saved in %HOMEPATH%. Try run WLS with elevated Windows privilages."
     fi
 }
 
@@ -113,7 +117,7 @@ install_vagrant()
 install_software()
 {
     local spass=$1
-    
+
     echo $spass | sudo -S apt-get update
     echo $spass | sudo -S apt-get -y install p7zip-full
 
