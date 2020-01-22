@@ -88,6 +88,38 @@ install_vagrant_mac()
     echo install_vagrant_mac
 }
 
+install_virtualbox_win()
+{
+    local name=VirtualBox-6.1.0-135406-Win
+    local msi_name=${name}.msi
+    local exe_name=${name}.exe
+    local source_path=https://download.virtualbox.org/virtualbox/6.1.0/${install_name}
+
+    cmd.exe /c "cd %HOMEPATH%"
+
+    if [ -w . ] ; then
+        wget $source_path   
+        $exe_name -extract -path .     
+        cmd.exe /c "start /wait msiexec.exe /i "${msi_name}" /qn"
+        rm $exe_name
+        rm $msi_name
+        #//certutil -addstore "TrustedPublisher" oracle.cer
+        #start /wait VirtualBox-6.1.0-135406-Win.exe --silent
+    else
+        __rise_error "Cannot write to path saved in %HOMEPATH%. Try run WLS with elevated Windows privilages."
+    fi    
+}
+
+install_virtualbox_nix()
+{
+    echo install_virtualbox_nix    
+}
+
+install_virtualbox_mac()
+{
+    echo install_virtualbox_mac    
+}
+
 install_packer()
 {
     if [ $(__is_wsl) -eq 0 ]; then
@@ -114,6 +146,19 @@ install_vagrant()
     fi
 }
 
+install_virtualbox()
+{
+    if [ $(__is_wsl) -eq 0 ]; then
+        install_virtualbox_win
+    elif [ $(__is_nix) -eq 0 ]; then
+        install_virtualbox_nix
+    elif [ $(__is_mac) -eq 0 ]; then
+        install_virtualbox_mac
+    else
+        __rise_error "Unknown platform! Cannot install packer!"
+    fi
+}
+
 install_software()
 {
     local spass=$1
@@ -121,6 +166,7 @@ install_software()
     echo $spass | sudo -S apt-get update
     echo $spass | sudo -S apt-get -y install p7zip-full
 
+    install_virtualbox
     install_packer
     install_vagrant
 }

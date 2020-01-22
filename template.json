@@ -101,6 +101,9 @@
         ,"bash -c './sutils.sh install_software a'"
       ]
     }
+    ,{
+      "type": "windows-restart"
+    }
   ],
   "post-processors": [
     {
