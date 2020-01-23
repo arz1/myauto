@@ -90,21 +90,15 @@ install_vagrant_mac()
 
 install_virtualbox_win()
 {
-    local name=VirtualBox-6.1.0-135406-Win
-    local msi_name=${name}.msi
-    local exe_name=${name}.exe
-    local source_path=https://download.virtualbox.org/virtualbox/6.1.0/${install_name}
+    local install_name=VirtualBox-6.0.14-133895-Win.exe
+    local source_path=https://download.virtualbox.org/virtualbox/6.0.14/${install_name}
 
     cmd.exe /c "cd %HOMEPATH%"
 
     if [ -w . ] ; then
         wget $source_path   
-        $exe_name -extract -path .     
-        cmd.exe /c "start /wait msiexec.exe /i "${msi_name}" /qn"
-        rm $exe_name
-        rm $msi_name
-        #//certutil -addstore "TrustedPublisher" oracle.cer
-        #start /wait VirtualBox-6.1.0-135406-Win.exe --silent
+        ./$install_name --silent
+        rm $install_name
     else
         __rise_error "Cannot write to path saved in %HOMEPATH%. Try run WLS with elevated Windows privilages."
     fi    
@@ -142,7 +136,7 @@ install_vagrant()
     elif [ $(__is_mac) -eq 0 ]; then
         install_vagrant_mac
     else
-        __rise_error "Unknown platform! Cannot install packer!"
+        __rise_error "Unknown platform! Cannot install vagrant!"
     fi
 }
 
@@ -155,7 +149,7 @@ install_virtualbox()
     elif [ $(__is_mac) -eq 0 ]; then
         install_virtualbox_mac
     else
-        __rise_error "Unknown platform! Cannot install packer!"
+        __rise_error "Unknown platform! Cannot install virtualbox!"
     fi
 }
 
