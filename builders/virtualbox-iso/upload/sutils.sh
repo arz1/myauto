@@ -38,10 +38,12 @@ install_packer_win()
     local destination_path=/mnt/c/Windows/System32/
 
     if [ -w $destination_path ] ; then
-        wget $source_path
+        wget -nv $source_path
+        echo Packer installation started...
         7z e $archive_name
         mv --force $file_name $destination_path
         rm $archive_name
+        echo Packer installation finished.
     else
         __rise_error "Cannot write to path "${destination_path}" Try run WLS with elevated Windows privilages."
     fi
@@ -63,15 +65,16 @@ install_vagrant_win()
     local source_path=https://releases.hashicorp.com/vagrant/2.2.6/${install_name}
     local win_user=$1
 
-    cmd.exe /c "cd %HOMEPATH%"
+    __goto_winhome
 
     if [ -w . ] ; then
-        wget $source_path
-        
+        wget -nv $source_path
+        echo Vagrant installation started...
         cmd.exe /c "start /wait msiexec.exe /a "${install_name}" /qn TARGETDIR=C:\\"
         rm $install_name
         rm "/mnt/c/"${install_name}
         setx.exe /M PATH "%PATH%;C:\Hashicorp\Vagrant\bin"
+        echo Vagrant installation finished.
         echo Machine restart adviced...
     else
         __rise_error "Cannot write to path saved in %HOMEPATH%. Try run WLS with elevated Windows privilages."
@@ -88,17 +91,46 @@ install_vagrant_mac()
     echo install_vagrant_mac
 }
 
+__goto_winhome()
+{
+    local winhome=$(wslpath $(cmd.exe /C "echo %USERPROFILE%" | tr -d '\r'))
+    cd $winhome
+}
+
 install_virtualbox_win()
 {
     local install_name=VirtualBox-6.0.14-133895-Win.exe
     local source_path=https://download.virtualbox.org/virtualbox/6.0.14/${install_name}
 
-    cmd.exe /c "cd %HOMEPATH%"
+    local msi_name_x64=VirtualBox-6.0.14-r133895-MultiArch_amd64.msi
+    local msi_name_x86=VirtualBox-6.0.14-r133895-MultiArch_x86.msi
+
+    #__goto_winhome    
 
     if [ -w . ] ; then
-        wget $source_path   
-        ./$install_name --silent
-        rm $install_name
+        # wget -nv $source_path   
+        # echo Virtualbox installation started...
+        # ./$install_name --silent
+        # echo Virtualbox installation cleaning...
+        # rm ./$install_name
+        # echo Virtualbox installation finished.
+
+
+        echo Virtualbox installation started...
+        echo Download. Please wait...
+        wget -nv $source_path        
+        ./$install_name --extract --silent --path .
+        cmd.exe /c "start /wait msiexec.exe /i "${msi_name_x64}" /qn"
+        #cmd.exe /c "start /wait msiexec.exe /a "${msi_name_x64}" /qn"
+        echo Virtualbox installation cleaning...
+        rm ./$install_name
+        rm ./$msi_name_x64
+        rm ./$msi_name_x86
+        echo Virtualbox installation finished.
+
+        #//certutil -addstore "TrustedPublisher" oracle.cer
+        #start /wait VirtualBox-6.1.0-135406-Win.exe --silent
+
     else
         __rise_error "Cannot write to path saved in %HOMEPATH%. Try run WLS with elevated Windows privilages."
     fi    
@@ -157,12 +189,12 @@ install_software()
 {
     local spass=$1
 
-    echo $spass | sudo -S apt-get update
-    echo $spass | sudo -S apt-get -y install p7zip-full
+    #echo $spass | sudo -S apt-get update
+    #echo $spass | sudo -S apt-get -y install p7zip-full
 
     install_virtualbox
-    install_packer
-    install_vagrant
+    #install_packer
+    #install_vagrant
 }
 
 help()
