@@ -97,6 +97,29 @@ __goto_winhome()
     cd $winhome
 }
 
+__install_virtualbox_certs_win()
+{
+    local install_name=VBoxGuestAdditions_6.0.14.iso
+    local source_path=https://download.virtualbox.org/virtualbox/6.0.14/${install_name}
+
+    echo Virtualbox certs installation started...
+    echo Download guest additions. Please wait...
+
+    wget -nv $source_path
+
+    local dir_name=VBoxGuestAdditions_6.0.14
+
+    7z x -y -o$dir_name $install_name
+    
+    # Ignore if certs already installed.
+    cmd.exe /c "${dir_name}\\cert\\VBoxCertUtil.exe add-trusted-publisher ${dir_name}\\cert\\vbox*.cer --root ${dir_name}\\cert\\vbox*.cer" || :
+
+    rm ./$install_name
+    rm -rf ./$dir_name
+
+    echo Virtualbox certs installation finished.
+}
+
 install_virtualbox_win()
 {
     local install_name=VirtualBox-6.0.14-133895-Win.exe
@@ -104,8 +127,8 @@ install_virtualbox_win()
 
     local msi_name_x64=VirtualBox-6.0.14-r133895-MultiArch_amd64.msi
     local msi_name_x86=VirtualBox-6.0.14-r133895-MultiArch_x86.msi
-
-    #__goto_winhome    
+    
+    __goto_winhome    
 
     if [ -w . ] ; then
         # wget -nv $source_path   
@@ -115,9 +138,11 @@ install_virtualbox_win()
         # rm ./$install_name
         # echo Virtualbox installation finished.
 
+        __install_virtualbox_certs_win
 
         echo Virtualbox installation started...
         echo Download. Please wait...
+
         wget -nv $source_path        
         ./$install_name --extract --silent --path .
         cmd.exe /c "start /wait msiexec.exe /i "${msi_name_x64}" /qn"
@@ -189,8 +214,8 @@ install_software()
 {
     local spass=$1
 
-    #echo $spass | sudo -S apt-get update
-    #echo $spass | sudo -S apt-get -y install p7zip-full
+    echo $spass | sudo -S apt-get update
+    echo $spass | sudo -S apt-get -y install p7zip-full
 
     install_virtualbox
     #install_packer
