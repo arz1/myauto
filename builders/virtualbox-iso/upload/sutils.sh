@@ -144,9 +144,11 @@ install_virtualbox_win()
         echo Download. Please wait...
 
         wget -nv $source_path        
+        echo Download finished. Extracting...
         ./$install_name --extract --silent --path .
-        cmd.exe /c "start /wait msiexec.exe /i "${msi_name_x64}" /qn"
-        #cmd.exe /c "start /wait msiexec.exe /a "${msi_name_x64}" /qn"
+        echo Installation files extracted. Execution...
+        #cmd.exe /c "start /wait msiexec.exe /i "${msi_name_x64}" /qn /L*V mylog.log"
+        cmd.exe /c "start /wait ${install_name} --silent --ignore-reboot"
         echo Virtualbox installation cleaning...
         rm ./$install_name
         rm ./$msi_name_x64

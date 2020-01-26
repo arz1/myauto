@@ -19,7 +19,7 @@
     "virtualbox_ssh_username": "Administrator",
     "virtualbox_ssh_password": "Packer42-",
     "virtualbox_ssh_timeout": "30m",
-    "virtualbox_guest_additions_mode": "upload",
+    "virtualbox_guest_additions_mode": "disable",
     "virtualbox_shutdown_command": "shutdown /s /t 10",
     "virtualbox_shutdown_timeout": "10m",
     "virtualbox_post_shutdown_delay": "5s",
