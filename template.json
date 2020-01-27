@@ -92,13 +92,7 @@
       "inline": [
         ". {{user `upload_destination`}}/putils.ps1"
         ,"Install-Wsl a"
-      ]
-    }
-    ,{
-      "type": "powershell",
-      "inline": [
-        "cd {{user `upload_destination`}}"
-        ,"bash -c './sutils.sh install_software a'"
+        ,"bash.exe -c '{{user `upload_destination`}}/sutils.sh install_software a'"
       ]
     }
     ,{
