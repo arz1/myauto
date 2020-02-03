@@ -2,7 +2,7 @@ function Enable-Wsl-Feature()
 {
     Write-Host 'WSL feature enabling...'
     $ProgressPreference = 'SilentlyContinue'
-    Enable-WindowsOptionalFeature -NoRestart -WarningAction SilentlyContinue -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+    Enable-WindowsOptionalFeature -NoRestart -WarningAction SilentlyContinue -Online -All -FeatureName Microsoft-Windows-Subsystem-Linux
     Write-Host 'WSL feature enabled.'
 }
 
@@ -22,7 +22,7 @@ function Install-Wsl($spass)
     bash -c 'usermod -aG sudo wsluser'
     ./ubuntu1804.exe config --default-user wsluser
     Write-Host 'Done.'
-    Write-Host 'INSTALL GUEST ISO'
+    #Write-Host 'INSTALL GUEST ISO'
 }
 
 # function Install-Wsl-Software()

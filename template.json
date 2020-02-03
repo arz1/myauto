@@ -92,7 +92,7 @@
       "inline": [
         ". {{user `upload_destination`}}/putils.ps1"
         ,"Install-Wsl a"
-        ,"bash.exe -c '{{user `upload_destination`}}/sutils.sh install_software a'"
+        ,"wsl.exe -e \"`$(wslpath {{user `upload_destination`}})/sutils.sh install_software a\""
       ]
     }
     ,{

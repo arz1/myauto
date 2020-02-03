@@ -136,7 +136,7 @@ install_virtualbox_win()
         # ./$install_name --silent
         # echo Virtualbox installation cleaning...
         # rm ./$install_name
-        # echo Virtualbox installation finished.
+        # echo Virtualbox installation finished.v
 
         __install_virtualbox_certs_win
 
@@ -144,12 +144,28 @@ install_virtualbox_win()
         echo Download. Please wait...
 
         wget -nv $source_path        
-        echo Download finished. Extracting.
+        echo Download finished. Installation...
         #./$install_name --extract --silent --path .
         #echo Installation files extracted. Execution...
         #cmd.exe /c "start /wait msiexec.exe /i "${msi_name_x64}" /qn /L*V mylog.log"
         #cmd.exe /c "start /B /wait """" ${install_name} --silent --ignore-reboot"
-        cmd.exe /c "${install_name} --silent --ignore-reboot"
+        #cmd.exe /c "start /wait $install_name --silent && exit 0"
+        #local 
+        ###############
+        # install_vbox_cmd="$install_name --silent && exit 0"
+        # echo $install_vbox_cmd
+
+        # #local 
+        # install_cmd="cmd.exe /c \"$install_vbox_cmd\""
+        # echo $install_cmd
+
+        # #local
+        # ext_cmd="cmd.exe /c \"start /wait $install_cmd\""
+        # echo $ext_cmd
+        # eval $ext_cmd
+        ##############
+        cmd.exe /c "$install_name --silent && exit 0"
+
         echo Virtualbox installation cleaning...
         #rm ./$install_name
         #rm ./$msi_name_x64
@@ -219,6 +235,8 @@ install_software()
 
     echo $spass | sudo -S apt-get update
     echo $spass | sudo -S apt-get -y install p7zip-full
+
+#administrator@WINGUSZ-EH06RA1 C:\Users\Administrator>start /wait cmd.exe /c "VirtualBox-6.0.14-133895-Win.exe --silent && exit"
 
     install_virtualbox
     #install_packer
